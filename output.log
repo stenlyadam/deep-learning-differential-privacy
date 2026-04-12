@@ -1,0 +1,131 @@
+2026-04-12 14:28:31.056749: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2026-04-12 14:28:31.056787: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2026-04-12 14:28:31.058219: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2026-04-12 14:28:31.065173: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2026-04-12 14:28:31.705959: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2026-04-12 14:28:34.901482: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1929] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 9803 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 2080 Ti, pci bus id: 0000:3b:00.0, compute capability: 7.5
+2026-04-12 14:28:34.902141: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1929] Created device /job:localhost/replica:0/task:0/device:GPU:1 with 9803 MB memory:  -> device: 1, name: NVIDIA GeForce RTX 2080 Ti, pci bus id: 0000:5e:00.0, compute capability: 7.5
+2026-04-12 14:28:34.902694: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1929] Created device /job:localhost/replica:0/task:0/device:GPU:2 with 9803 MB memory:  -> device: 2, name: NVIDIA GeForce RTX 2080 Ti, pci bus id: 0000:86:00.0, compute capability: 7.5
+2026-04-12 14:28:34.903287: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1929] Created device /job:localhost/replica:0/task:0/device:GPU:3 with 9803 MB memory:  -> device: 3, name: NVIDIA GeForce RTX 2080 Ti, pci bus id: 0000:af:00.0, compute capability: 7.5
+Loading MNIST dataset...
+
+==============================
+Training baseline model
+==============================
+Epoch 1/5
+2026-04-12 14:28:36.100411: I external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:454] Loaded cuDNN version 8904
+2026-04-12 14:28:36.550063: I external/local_xla/xla/service/service.cc:168] XLA service 0x7f50c93a30a0 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2026-04-12 14:28:36.550093: I external/local_xla/xla/service/service.cc:176]   StreamExecutor device (0): NVIDIA GeForce RTX 2080 Ti, Compute Capability 7.5
+2026-04-12 14:28:36.550099: I external/local_xla/xla/service/service.cc:176]   StreamExecutor device (1): NVIDIA GeForce RTX 2080 Ti, Compute Capability 7.5
+2026-04-12 14:28:36.550106: I external/local_xla/xla/service/service.cc:176]   StreamExecutor device (2): NVIDIA GeForce RTX 2080 Ti, Compute Capability 7.5
+2026-04-12 14:28:36.550111: I external/local_xla/xla/service/service.cc:176]   StreamExecutor device (3): NVIDIA GeForce RTX 2080 Ti, Compute Capability 7.5
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1775975316.648856 2790250 device_compiler.h:186] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+240/240 - 3s - loss: 0.5545 - accuracy: 0.8215 - val_loss: 0.2053 - val_accuracy: 0.9397 - 3s/epoch - 14ms/step
+Epoch 2/5
+240/240 - 1s - loss: 0.1091 - accuracy: 0.9664 - val_loss: 0.1017 - val_accuracy: 0.9656 - 1s/epoch - 5ms/step
+Epoch 3/5
+240/240 - 1s - loss: 0.0749 - accuracy: 0.9762 - val_loss: 0.0500 - val_accuracy: 0.9828 - 1s/epoch - 5ms/step
+Epoch 4/5
+240/240 - 1s - loss: 0.0598 - accuracy: 0.9814 - val_loss: 0.0555 - val_accuracy: 0.9821 - 1s/epoch - 5ms/step
+Epoch 5/5
+240/240 - 1s - loss: 0.0494 - accuracy: 0.9844 - val_loss: 0.0508 - val_accuracy: 0.9831 - 1s/epoch - 6ms/step
+
+==============================
+Training DP model | noise_multiplier=0.5
+==============================
+Epoch 1/5
+240/240 - 30s - loss: 1.5685 - accuracy: 0.4728 - val_loss: 0.8986 - val_accuracy: 0.6876 - 30s/epoch - 124ms/step
+Epoch 2/5
+240/240 - 29s - loss: 0.7240 - accuracy: 0.7533 - val_loss: 0.5971 - val_accuracy: 0.8082 - 29s/epoch - 120ms/step
+Epoch 3/5
+240/240 - 31s - loss: 0.5885 - accuracy: 0.8211 - val_loss: 0.5475 - val_accuracy: 0.8447 - 31s/epoch - 128ms/step
+Epoch 4/5
+240/240 - 32s - loss: 0.5499 - accuracy: 0.8507 - val_loss: 0.5113 - val_accuracy: 0.8673 - 32s/epoch - 135ms/step
+Epoch 5/5
+240/240 - 35s - loss: 0.5297 - accuracy: 0.8683 - val_loss: 0.4881 - val_accuracy: 0.8836 - 35s/epoch - 144ms/step
+
+==============================
+Training DP model | noise_multiplier=1.0
+==============================
+Epoch 1/5
+240/240 - 36s - loss: 1.5369 - accuracy: 0.5048 - val_loss: 0.8171 - val_accuracy: 0.7384 - 36s/epoch - 151ms/step
+Epoch 2/5
+240/240 - 37s - loss: 0.6377 - accuracy: 0.7997 - val_loss: 0.5109 - val_accuracy: 0.8444 - 37s/epoch - 153ms/step
+Epoch 3/5
+240/240 - 38s - loss: 0.4846 - accuracy: 0.8606 - val_loss: 0.4258 - val_accuracy: 0.8872 - 38s/epoch - 159ms/step
+Epoch 4/5
+240/240 - 38s - loss: 0.4307 - accuracy: 0.8896 - val_loss: 0.3972 - val_accuracy: 0.9034 - 38s/epoch - 160ms/step
+Epoch 5/5
+240/240 - 38s - loss: 0.4045 - accuracy: 0.9039 - val_loss: 0.3659 - val_accuracy: 0.9177 - 38s/epoch - 159ms/step
+
+==============================
+Training DP model | noise_multiplier=1.5
+==============================
+Epoch 1/5
+240/240 - 40s - loss: 1.7467 - accuracy: 0.4738 - val_loss: 1.1143 - val_accuracy: 0.6388 - 40s/epoch - 165ms/step
+Epoch 2/5
+240/240 - 38s - loss: 0.8825 - accuracy: 0.7141 - val_loss: 0.6941 - val_accuracy: 0.7757 - 38s/epoch - 159ms/step
+Epoch 3/5
+240/240 - 38s - loss: 0.6767 - accuracy: 0.7888 - val_loss: 0.6054 - val_accuracy: 0.8222 - 38s/epoch - 160ms/step
+Epoch 4/5
+240/240 - 38s - loss: 0.6064 - accuracy: 0.8266 - val_loss: 0.5523 - val_accuracy: 0.8494 - 38s/epoch - 159ms/step
+Epoch 5/5
+240/240 - 38s - loss: 0.5706 - accuracy: 0.8504 - val_loss: 0.5188 - val_accuracy: 0.8715 - 38s/epoch - 159ms/step
+
+==============================
+Training DP model | noise_multiplier=2.0
+==============================
+Epoch 1/5
+240/240 - 40s - loss: 1.4104 - accuracy: 0.5828 - val_loss: 0.6297 - val_accuracy: 0.7938 - 40s/epoch - 166ms/step
+Epoch 2/5
+240/240 - 39s - loss: 0.5414 - accuracy: 0.8295 - val_loss: 0.4499 - val_accuracy: 0.8613 - 39s/epoch - 163ms/step
+Epoch 3/5
+240/240 - 40s - loss: 0.4629 - accuracy: 0.8708 - val_loss: 0.4407 - val_accuracy: 0.8860 - 40s/epoch - 165ms/step
+Epoch 4/5
+240/240 - 39s - loss: 0.4420 - accuracy: 0.8894 - val_loss: 0.4094 - val_accuracy: 0.9011 - 39s/epoch - 163ms/step
+Epoch 5/5
+240/240 - 39s - loss: 0.4284 - accuracy: 0.9009 - val_loss: 0.3877 - val_accuracy: 0.9106 - 39s/epoch - 163ms/step
+
+==============================
+Training DP model | noise_multiplier=2.5
+==============================
+Epoch 1/5
+240/240 - 40s - loss: 1.5429 - accuracy: 0.5293 - val_loss: 0.8061 - val_accuracy: 0.7462 - 40s/epoch - 166ms/step
+Epoch 2/5
+240/240 - 39s - loss: 0.6801 - accuracy: 0.7868 - val_loss: 0.5575 - val_accuracy: 0.8394 - 39s/epoch - 162ms/step
+Epoch 3/5
+240/240 - 39s - loss: 0.5595 - accuracy: 0.8443 - val_loss: 0.5006 - val_accuracy: 0.8706 - 39s/epoch - 162ms/step
+Epoch 4/5
+240/240 - 39s - loss: 0.5468 - accuracy: 0.8658 - val_loss: 0.5132 - val_accuracy: 0.8825 - 39s/epoch - 163ms/step
+Epoch 5/5
+240/240 - 39s - loss: 0.5400 - accuracy: 0.8779 - val_loss: 0.4961 - val_accuracy: 0.8923 - 39s/epoch - 164ms/step
+
+==============================
+Training DP model | noise_multiplier=3.0
+==============================
+Epoch 1/5
+240/240 - 40s - loss: 1.5071 - accuracy: 0.5226 - val_loss: 0.7893 - val_accuracy: 0.7177 - 40s/epoch - 167ms/step
+Epoch 2/5
+240/240 - 39s - loss: 0.6516 - accuracy: 0.7889 - val_loss: 0.5096 - val_accuracy: 0.8422 - 39s/epoch - 162ms/step
+Epoch 3/5
+240/240 - 40s - loss: 0.5154 - accuracy: 0.8551 - val_loss: 0.4587 - val_accuracy: 0.8759 - 40s/epoch - 165ms/step
+Epoch 4/5
+240/240 - 39s - loss: 0.4821 - accuracy: 0.8797 - val_loss: 0.4463 - val_accuracy: 0.8908 - 39s/epoch - 163ms/step
+Epoch 5/5
+240/240 - 39s - loss: 0.4649 - accuracy: 0.8906 - val_loss: 0.4212 - val_accuracy: 0.9012 - 39s/epoch - 161ms/step
+
+==============================
+Final Results
+==============================
+           model  noise_multiplier  l2_norm_clip  epochs  batch_size   delta  epsilon                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       privacy_statement  test_loss  test_accuracy  training_time_sec
+        Baseline               0.0           NaN       5         250 0.00001      NaN                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     NaN   0.050837         0.9831               9.02
+DP-SGD_sigma_0.5               0.5           1.0       5         250 0.00001   81.116 DP-SGD performed over 60000 examples with 250 examples per iteration, noise\nmultiplier 0.5 for 5 epochs with microbatching, and no bound on number of\nexamples per user.\n\nThis privacy guarantee protects the release of all model checkpoints in addition\nto the final model.\n\nExample-level DP with add-or-remove-one adjacency at delta = 1e-05 computed with\nRDP accounting:\n    Epsilon with each example occurring once per epoch:        81.116\n    Epsilon assuming Poisson sampling (*):                     86.794\n\nNo user-level privacy guarantee is possible without a bound on the number of\nexamples per user.\n\n(*) Poisson sampling is not usually done in training pipelines, but assuming\nthat the data was randomly shuffled, it is believed that the actual epsilon\nshould be closer to this value than the conservative assumption of an arbitrary\ndata order.\n   0.488463         0.8836             156.92
+DP-SGD_sigma_1.0               1.0           1.0       5         250 0.00001   30.127 DP-SGD performed over 60000 examples with 250 examples per iteration, noise\nmultiplier 1.0 for 5 epochs with microbatching, and no bound on number of\nexamples per user.\n\nThis privacy guarantee protects the release of all model checkpoints in addition\nto the final model.\n\nExample-level DP with add-or-remove-one adjacency at delta = 1e-05 computed with\nRDP accounting:\n    Epsilon with each example occurring once per epoch:        30.127\n    Epsilon assuming Poisson sampling (*):                      8.909\n\nNo user-level privacy guarantee is possible without a bound on the number of\nexamples per user.\n\n(*) Poisson sampling is not usually done in training pipelines, but assuming\nthat the data was randomly shuffled, it is believed that the actual epsilon\nshould be closer to this value than the conservative assumption of an arbitrary\ndata order.\n   0.366081         0.9177             187.95
+DP-SGD_sigma_1.5               1.5           1.0       5         250 0.00001   17.665 DP-SGD performed over 60000 examples with 250 examples per iteration, noise\nmultiplier 1.5 for 5 epochs with microbatching, and no bound on number of\nexamples per user.\n\nThis privacy guarantee protects the release of all model checkpoints in addition\nto the final model.\n\nExample-level DP with add-or-remove-one adjacency at delta = 1e-05 computed with\nRDP accounting:\n    Epsilon with each example occurring once per epoch:        17.665\n    Epsilon assuming Poisson sampling (*):                      2.440\n\nNo user-level privacy guarantee is possible without a bound on the number of\nexamples per user.\n\n(*) Poisson sampling is not usually done in training pipelines, but assuming\nthat the data was randomly shuffled, it is believed that the actual epsilon\nshould be closer to this value than the conservative assumption of an arbitrary\ndata order.\n   0.519049         0.8715             192.94
+DP-SGD_sigma_2.0               2.0           1.0       5         250 0.00001   12.302 DP-SGD performed over 60000 examples with 250 examples per iteration, noise\nmultiplier 2.0 for 5 epochs with microbatching, and no bound on number of\nexamples per user.\n\nThis privacy guarantee protects the release of all model checkpoints in addition\nto the final model.\n\nExample-level DP with add-or-remove-one adjacency at delta = 1e-05 computed with\nRDP accounting:\n    Epsilon with each example occurring once per epoch:        12.302\n    Epsilon assuming Poisson sampling (*):                      1.122\n\nNo user-level privacy guarantee is possible without a bound on the number of\nexamples per user.\n\n(*) Poisson sampling is not usually done in training pipelines, but assuming\nthat the data was randomly shuffled, it is believed that the actual epsilon\nshould be closer to this value than the conservative assumption of an arbitrary\ndata order.\n   0.387965         0.9106             197.81
+DP-SGD_sigma_2.5               2.5           1.0       5         250 0.00001    9.368 DP-SGD performed over 60000 examples with 250 examples per iteration, noise\nmultiplier 2.5 for 5 epochs with microbatching, and no bound on number of\nexamples per user.\n\nThis privacy guarantee protects the release of all model checkpoints in addition\nto the final model.\n\nExample-level DP with add-or-remove-one adjacency at delta = 1e-05 computed with\nRDP accounting:\n    Epsilon with each example occurring once per epoch:         9.368\n    Epsilon assuming Poisson sampling (*):                      0.681\n\nNo user-level privacy guarantee is possible without a bound on the number of\nexamples per user.\n\n(*) Poisson sampling is not usually done in training pipelines, but assuming\nthat the data was randomly shuffled, it is believed that the actual epsilon\nshould be closer to this value than the conservative assumption of an arbitrary\ndata order.\n   0.496385         0.8923             196.37
+DP-SGD_sigma_3.0               3.0           1.0       5         250 0.00001    7.532 DP-SGD performed over 60000 examples with 250 examples per iteration, noise\nmultiplier 3.0 for 5 epochs with microbatching, and no bound on number of\nexamples per user.\n\nThis privacy guarantee protects the release of all model checkpoints in addition\nto the final model.\n\nExample-level DP with add-or-remove-one adjacency at delta = 1e-05 computed with\nRDP accounting:\n    Epsilon with each example occurring once per epoch:         7.532\n    Epsilon assuming Poisson sampling (*):                      0.478\n\nNo user-level privacy guarantee is possible without a bound on the number of\nexamples per user.\n\n(*) Poisson sampling is not usually done in training pipelines, but assuming\nthat the data was randomly shuffled, it is believed that the actual epsilon\nshould be closer to this value than the conservative assumption of an arbitrary\ndata order.\n   0.421580         0.9012             196.80
+
+All results saved in: results
