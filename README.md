@@ -26,10 +26,10 @@ The MNIST dataset was used for this experiment. It consists of:
 
 ### Model Architecture
 A Convolutional Neural Network (CNN) was used:
-* Conv2D -> ReLU -> MaxPooling
-* Conv2D -> ReLU -> MaxPooling
+* Conv2D &rarr; ReLU &rarr; MaxPooling
+* Conv2D &rarr; ReLU &rarr; MaxPooling
 * Flatten
-* Dense -> ReLU
+* Dense &rarr; ReLU
 * Output layer (10 classes)
 The implementation is shown below.
 ```
@@ -107,19 +107,151 @@ def train_baseline(x_train, y_train, x_test, y_test) -> Dict:
 This serves as a reference for evaluating the impact of Differential Privacy.
 ### Differential Privacy Implementation
 Differential Privacy was implemented using DP-SGD, which modifies training as follows:
-* Gradient Clipping
-Each training sample’s gradient is clipped to a fixed L2 norm to limit its influence
-* Noise Addition
-Gaussian noise is added to the aggregated gradients
-* Privacy Measurement
-Privacy is quantified using 𝜀, where smaller values indicate stronger privacy
+* Gradient Clipping &rarr; Each training sample’s gradient is clipped to a fixed L2 norm to limit its influence
+* Noise Addition &rarr; Gaussian noise is added to the aggregated gradients
+* Privacy Measurement &rarr; Privacy is quantified using 𝜀, where smaller values indicate stronger privacy
+```
+# =========================================================
+# Train DP model
+# =========================================================
+def train_dp_model(x_train, y_train, x_test, y_test, noise_multiplier: float) -> Dict:
+    """
+    Train a DP-SGD model.
 
-### Baseline Model
-* Standard CNN trained with SGD
-### DP Model
-* Gradient clipping
-* Gaussian noise addition
-* Privacy accounting using ε
+    Key DP idea:
+    - per-example gradients are clipped to L2_NORM_CLIP
+    - Gaussian noise is added during optimization
+    """
+    print("\n==============================")
+    print(f"Training DP model | noise_multiplier={noise_multiplier}")
+    print("==============================")
+
+    model = create_model()
+
+    # For DP optimizers, use unreduced loss so microbatches/per-example handling works
+    loss = tf.keras.losses.SparseCategoricalCrossentropy(
+        from_logits=True,
+        reduction=tf.keras.losses.Reduction.NONE
+    )
+
+    optimizer = DPKerasSGDOptimizer(
+        l2_norm_clip=L2_NORM_CLIP,
+        noise_multiplier=noise_multiplier,
+        num_microbatches=BATCH_SIZE,   # one microbatch per example for simplicity
+        learning_rate=LEARNING_RATE
+    )
+
+    model.compile(
+        optimizer=optimizer,
+        loss=loss,
+        metrics=["accuracy"]
+    )
+       start_time = time.time()
+    history = model.fit(
+        x_train, y_train,
+        epochs=EPOCHS,
+        batch_size=BATCH_SIZE,
+        validation_data=(x_test, y_test),
+        verbose=2
+    )
+    train_time = time.time() - start_time
+
+    test_loss, test_acc = model.evaluate(x_test, y_test, verbose=0)
+       
+        # Call get_epsilon funtion to get epsion value for different noise multiplier.
+        epsilon, statement = get_epsilon(
+        num_examples=len(x_train),
+        batch_size=BATCH_SIZE,
+        noise_multiplier=noise_multiplier,
+        epochs=EPOCHS,
+        delta=DELTA
+    )
+
+    result = {
+        "model": f"DP-SGD_sigma_{noise_multiplier}",
+        "noise_multiplier": noise_multiplier,
+        "l2_norm_clip": L2_NORM_CLIP,
+        "epochs": EPOCHS,
+        "batch_size": BATCH_SIZE,
+        "delta": DELTA,
+        "epsilon": epsilon,
+        "privacy_statement": statement,
+        "test_loss": float(test_loss),
+        "test_accuracy": float(test_acc),
+        "training_time_sec": round(train_time, 2)
+    }
+
+    return result, history.history
+```
+### Data Perturbation Method
+In this experiment, the data is not directly modified. Instead, perturbation is applied during the training process using Differentially Private Stochastic Gradient Descent (DP-SGD). Specifically, the gradient computed from each individual training example is first clipped to a fixed L2 norm to limit its influence. Then, Gaussian noise is added to the aggregated gradients before updating the model parameters. This process effectively hides the contribution of individual data samples, ensuring that the model does not reveal sensitive information about any specific training example. The implementation code is shown in the following.
+```
+loss = tf.keras.losses.SparseCategoricalCrossentropy(
+        from_logits=True,
+        reduction=tf.keras.losses.Reduction.NONE
+    )
+```
+
+### Privacy Measurement (Epsilon)
+During training the Data Privacy model, we also compute the epsilon value for each implementation of noise multiplier. The implementation code for computing epsilon is shown below.
+```
+# =========================================================
+# Epsilon computation helper
+# =========================================================
+def get_epsilon(num_examples: int, batch_size: int, noise_multiplier: float,
+                epochs: int, delta: float) -> float:
+    """
+    Compute epsilon using TensorFlow Privacy helper.
+
+    Official docs expose:
+    compute_dp_sgd_privacy(n, batch_size, noise_multiplier, epochs, delta)
+    Return both:
+    1. numeric epsilon value
+    2. full privacy statement
+    """
+    try:
+        statement = compute_dp_sgd_privacy_statement(
+            number_of_examples=num_examples,
+            batch_size=batch_size,
+            num_epochs=epochs,
+            noise_multiplier=noise_multiplier,
+            delta=delta,
+            used_microbatching=True
+        )
+    except TypeError:
+        # fallback for older/newer signatures
+        statement = compute_dp_sgd_privacy_statement(
+            num_examples,
+            batch_size,
+            epochs,
+            noise_multiplier,
+            delta,
+            used_microbatching=True
+        )
+
+    statement = str(statement)
+
+    # Extract numeric epsilon from the statement
+    match = re.search(
+        r"Epsilon with each example occurring once per epoch:\s*([0-9.]+)",
+        statement
+    )
+
+    eps = float(match.group(1)) if match else np.nan
+
+    return eps, statement
+<img width="468" height="510" alt="image" src="https://github.com/user-attachments/assets/9d45fdf9-7753-4066-89af-55f622f571c9" />
+
+```
+
+### Training Configuration
+To run the experiment, we use the following configuration
+* Epochs: 5
+* Batch size: 250
+* Learning rate: 0.15
+* L2 norm clip: 1.0
+* Delta: 10-5
+* Noise multipliers: 0.5, 1.0, 1.5, 2.0, 2.5, 3.0
 
 ## Results Summary
 | Model | Noise Multiplier | Test Accuracy | Epsilon | Training Time (s) |
