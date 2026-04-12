@@ -253,7 +253,9 @@ To run the experiment, we use the following configuration
 * Delta: 10-5
 * Noise multipliers: 0.5, 1.0, 1.5, 2.0, 2.5, 3.0
 
-## Results Summary
+## Results and Discussion
+### Performance Comparison
+
 | Model | Noise Multiplier | Test Accuracy | Epsilon | Training Time (s) |
 | --- | ---: | ---: | ---: | ---: |
 | Baseline | 0.0 | 98.31% | N/A | 9.02 |
@@ -263,6 +265,8 @@ To run the experiment, we use the following configuration
 | DP-SGD | 2.0 | 91.06% | 12.302 | 197.81 |
 | DP-SGD | 2.5 | 89.23% | 9.368 | 196.37 |
 | DP-SGD | 3.0 | 90.12% | 7.532 | 196.8 |
+
+The results demonstrate a clear tradeoff between model performance and privacy protection. The baseline model achieved the highest accuracy (98.13%), while DP models achieved 87% - 92% accuracy, showing good performance despite privacy constraints. The best DP performance was achieved at noise multiplier = 1.0. By increasing noise, the epsilon reduces and improves the privacy.
 
 ### Key Insight
 * Strong privacy can be achieved with minimal accuracy loss
