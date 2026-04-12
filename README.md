@@ -16,24 +16,43 @@ Member:
 * Analyze privacy-utility tradeoff
 * Evaluate privacy using epsilon (ε)
 
-🧠 Method
-Baseline Model
-Standard CNN trained with SGD
-DP Model
-Gradient clipping
-Gaussian noise addition
-Privacy accounting using ε
-📊 Results Summary
-Model	Noise Multiplier	Accuracy	Epsilon
-Baseline	0.0	98.74%	N/A
-DP-SGD	2.0	92.27%	~12
-Key Insight
-Strong privacy can be achieved with minimal accuracy loss
-DP introduces a tradeoff between privacy and performance
-📈 Visualizations
-Accuracy Comparison
+## Method
+### Baseline Model
+* Standard CNN trained with SGD
+### DP Model
+* Gradient clipping
+* Gaussian noise addition
+* Privacy accounting using ε
 
-Privacy-Utility Tradeoff
+## Results Summary
+| Model | Noise Multiplier | Test Accuracy | Epsilon | Training Time (s) |
+| --- | ---: | ---: | ---: | ---: |
+| Baseline | 0.0 | 98.31% | N/A | 9.02 |
+| DP-SGD | 0.5 | 88.36% | 81.116 | 156.92 |
+| DP-SGD | 1.0 | 91.77% | 30.127 | 187.95 |
+| DP-SGD | 1.5 | 87.15% | 17.665 | 192.94 |
+| DP-SGD | 2.0 | 91.06% | 12.302 | 197.81 |
+| DP-SGD | 2.5 | 89.23% | 9.368 | 196.37 |
+| DP-SGD | 3.0 | 90.12% | 7.532 | 196.8 |
+
+### Key Insight
+* Strong privacy can be achieved with minimal accuracy loss
+* DP introduces a tradeoff between privacy and performance
+
+## Visualizations
+### Accuracy Comparison
+Comparison of test accuracy between baseline and DP models.
+
+<p align="center">
+  <img src="results/accuracy_comparison.png" width="500">
+</p>
+
+### Privacy-Utility Tradeoff
+Relationship between epsilon (privacy level) and model accuracy.
+
+<p align="center">
+  <img src="results/privacy_utility_tradeoff.png" width="500">
+</p>
 
 ⚙️ Setup
 Requirements
