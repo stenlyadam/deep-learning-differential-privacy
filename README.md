@@ -1,4 +1,4 @@
-<img width="468" height="41" alt="image" src="https://github.com/user-attachments/assets/f555448f-f5b6-4055-a2cf-fd4ff01ee205" /># Deep Learning with Differential Privacy (DP-SGD)
+# Deep Learning with Differential Privacy (DP-SGD)
 
 ## Course Name: Data Privacy and Security (1142CS5164701)
 ### Group Name: SecureBytes
