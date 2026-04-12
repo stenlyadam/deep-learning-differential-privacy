@@ -54,15 +54,25 @@ Relationship between epsilon (privacy level) and model accuracy.
   <img src="results/privacy_utility_tradeoff.png" width="500">
 </p>
 
-⚙️ Setup
-Requirements
-pip install tensorflow tensorflow-privacy pandas matplotlib
-▶️ Run Experiment
+## Setup
+### Requirements
+```
+conda create -n dataprivacy_tf
+source activate dataprivacy_tf
+pip install -r requirements.txt
+```
+
+### Run Experiment
+```
 python code/hw2_dp_mnist.py
-📁 Project Structure
+```
+
+### Project Structure
+```
 code/        → training scripts
 results/     → experiment outputs
 report/      → final report
+```
 🔐 Privacy Explanation
 
 DP-SGD protects training data by:
